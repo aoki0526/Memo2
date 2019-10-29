@@ -15,18 +15,18 @@ public class MemolistDAO {
 	final String url = "jdbc:mysql://localhost:3306/Memo?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 	final String user = "root";
 	final String pass = "mikanneko0131";
-	
 
-	
+
+
 	// すべてのメモを取得する
-	public List<Memolist> findAll(){  
+	public List<Memolist> findAll(){
 		Connection conn = null;
 		List<Memolist> memolist = new ArrayList<Memolist>();
 
 		try { // jdbcドライバ読込
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(url,user,pass);
-			
+
 			// SELECT文
 			String sql = "SELECT no,title,text,date FROM memolist ORDER BY date DESC";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -65,17 +65,17 @@ public class MemolistDAO {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url,user,pass);
-			
+
 			// 追加するSQL
 			String sql = "INSERT INTO memolist(title,text,date) VALUES(?,?,?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, newmemo.getTitle());
 			ps.setString(2, newmemo.getText());
 			ps.setString(3,newmemo.getDate());
-			
+
 			// 実行
 			 int result = ps.executeUpdate();
-			
+
 			if (result != 0){
 				return false;
 			}
@@ -103,7 +103,7 @@ public class MemolistDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			 ps.setInt(1,no);
 			ResultSet rs = ps.executeQuery();
-			
+
 			if(rs.next()){
 				String title = rs.getString("title");
 				String text = rs.getString("text");
@@ -123,14 +123,14 @@ public class MemolistDAO {
 		}
 		return memolist;
 	}
-	
+
 	// 編集画面で保存を押したら更新処理をする
 	public void update(Memolist memolist){
 		Connection conn = null;
-		
+
 		try{
 		conn = DriverManager.getConnection(url,user,pass);
-		String sql = "UPDATE memolist SET title=?,text=?,date=? WHERE no=?"; 
+		String sql = "UPDATE memolist SET title=?,text=?,date=? WHERE no=?";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setString(1,memolist.getTitle());
 		ps.setString(2, memolist.getText());
@@ -154,7 +154,7 @@ public class MemolistDAO {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url,user,pass);
-			String sql = "DELETE FROM memolist WHERE no =?"; 
+			String sql = "DELETE FROM memolist WHERE no =?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, no);
 			ps.executeUpdate();
